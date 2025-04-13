@@ -16,7 +16,7 @@ public class XmlHandler extends BaseHandler {
                 JAXBContext context = JAXBContext.newInstance(MonsterListWrapper.class);
                 Unmarshaller unmarshaller = context.createUnmarshaller();
                 MonsterListWrapper wrapper = (MonsterListWrapper) unmarshaller.unmarshal(file);
-                return wrapper.getMonsters();
+                return wrapper.getCreatures();
             }
         } catch (JAXBException e) {
             System.err.println("Error importing XML data: " + e.getMessage());
@@ -32,7 +32,7 @@ public class XmlHandler extends BaseHandler {
                 Marshaller marshaller = context.createMarshaller();
                 marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
                 MonsterListWrapper wrapper = new MonsterListWrapper();
-                wrapper.setMonsters(monsters);
+                wrapper.setCreatures(monsters);
                 marshaller.marshal(wrapper, new File(filePath));
                 System.out.println("Data successfully exported to XML file.");
                 return;

@@ -42,9 +42,13 @@ public class Monster {
     @XmlElement(name = "activeTime")
     private String activeTime;
 
-    @JsonProperty("size")
-    @XmlElement(name = "size")
-    private Size size;
+    @XmlElement(name = "height")
+    @JsonProperty("height")
+    private String height; // Было Object
+
+    @XmlElement(name = "weight")
+    @JsonProperty("weight")
+    private String weight; // Было Object
 
     @JsonProperty("recipe")
     @XmlElement(name = "recipe")
@@ -122,12 +126,20 @@ public class Monster {
         this.activeTime = activeTime;
     }
 
-    public Size getSize() {
-        return size;
+    public String getHeight() {
+        return height;
     }
 
-    public void setSize(Size size) {
-        this.size = size;
+    public void setHeight(String height) {
+        this.height = height;
+    }
+
+    public String getWeight() {
+        return weight;
+    }
+
+    public void setWeight(String weight) {
+        this.weight = weight;
     }
 
     public Recipe getRecipe() {
@@ -144,34 +156,5 @@ public class Monster {
 
     public void setSource(String source) {
         this.source = source;
-    }
-
-    // Вложенный класс для размера
-    @XmlAccessorType(XmlAccessType.FIELD)
-    public static class Size {
-        @JsonProperty("height")
-        @XmlElement(name = "height")
-        private Object height; // Может быть числом или строкой ("неизвестно")
-
-        @JsonProperty("weight")
-        @XmlElement(name = "weight")
-        private Object weight; // Может быть числом или строкой ("неосязаем", "не измерим")
-
-        // Геттеры и сеттеры
-        public Object getHeight() {
-            return height;
-        }
-
-        public void setHeight(Object height) {
-            this.height = height;
-        }
-
-        public Object getWeight() {
-            return weight;
-        }
-
-        public void setWeight(Object weight) {
-            this.weight = weight;
-        }
     }
 }

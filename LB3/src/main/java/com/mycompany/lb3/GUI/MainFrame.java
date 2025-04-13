@@ -6,7 +6,6 @@ package com.mycompany.lb3.GUI;
 
 import com.mycompany.lb3.ChainOfResponsibility;
 import com.mycompany.lb3.Monster;
-import com.mycompany.lb3.Monster.Size;
 import com.mycompany.lb3.MonsterStorage;
 import com.mycompany.lb3.Recipe;
 import javax.swing.*;
@@ -16,7 +15,6 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.io.File;
 import java.util.List;
-import java.util.Map;
 
 public class MainFrame extends JFrame {
     private final MonsterStorage monsterStorage = new MonsterStorage();
@@ -107,7 +105,7 @@ public class MainFrame extends JFrame {
 
     private String chooseFile() {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Поддерживаемые форматы", "json", "xml", "yaml"));
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Поддерживаемые форматы", "json", "xml", "yaml", "yml"));
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 
         int result = fileChooser.showOpenDialog(this);
@@ -133,7 +131,7 @@ public class MainFrame extends JFrame {
 
     private void exportData(ActionEvent e) {
         JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Поддерживаемые форматы", "json", "xml", "yaml"));
+        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Поддерживаемые форматы", "json", "xml", "yaml", "yml"));
         fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
 
         int result = fileChooser.showSaveDialog(this);
@@ -175,33 +173,51 @@ public class MainFrame extends JFrame {
         details.append("Активность: ").append(monster.getActiveTime()).append("\n");
 
         // Размеры
-        Size size = monster.getSize();
-        if (size != null) {
-            details.append("Рост: ").append(size.getHeight()).append(" м").append("\n");
-            details.append("Вес: ").append(size.getWeight()).append(" кг").append("\n");
-        }
-
-        // Рецепт
-        Recipe recipe = monster.getRecipe();
-        if (recipe != null) {
-            details.append("Тип рецепта: ").append(recipe.getType()).append("\n");
-            details.append("Время приготовления: ").append(recipe.getBrewingTime()).append(" мин\n");
-            details.append("Эффективность: ").append(recipe.getEffectiveness()).append("\n");
-
-            // Ингредиенты
-            Map<String, Integer> ingredients = recipe.getIngredients();
-            if (ingredients != null && !ingredients.isEmpty()) {
-                details.append("Ингредиенты:\n");
-                for (Map.Entry<String, Integer> entry : ingredients.entrySet()) {
-                    details.append("- ").append(entry.getKey()).append(" (").append(entry.getValue()).append(")\n");
-                }
+        // Рост
+        details.append("Рост: ");
+        if (monster.getHeight() != null && !monster.getHeight().isEmpty()) {
+            try {
+                // Пробуем преобразовать в число
+                double heightValue = Integer.parseInt(monster.getHeight());
+                details.append(heightValue).append(" м");
+            } catch (NumberFormatException e) {
+                // Если не число, выводим как есть
+                details.append(monster.getHeight());
             }
+        } else {
+            details.append("неизвестно");
         }
+        details.append("\n");
 
-        // Источник информации
-        details.append("Источник информации: ").append(monster.getSource()).append("\n");
+        // Вес
+        details.append("Вес: ");
+        if (monster.getWeight() != null && !monster.getWeight().isEmpty()) {
+            try {
+                // Пробуем преобразовать в число
+                double weightValue = Integer.parseInt(monster.getWeight());
+                details.append(weightValue).append(" кг");
+            } catch (NumberFormatException e) {
+                // Если не число, выводим как есть
+                details.append(monster.getWeight());
+            }
+        } else {
+            details.append("неизвестно");
+        }
+        details.append("\n");
 
-        // Обновление текстового поля
-        monsterDetailsArea.setText(details.toString());
+            // Рецепт
+            Recipe recipe = monster.getRecipe();
+            if (recipe != null) {
+                details.append("Тип рецепта: ").append(recipe.getType()).append("\n");
+                details.append("Время приготовления: ").append(recipe.getBrewingTime()).append(" мин\n");
+                details.append("Эффективность: ").append(recipe.getEffectiveness()).append("\n");
+                details.append("Ингредиенты:").append(recipe.getIngredients()).append("\n");
+
+            // Источник информации
+            details.append("Источник информации: ").append(monster.getSource()).append("\n");
+
+            // Обновление текстового поля
+            monsterDetailsArea.setText(details.toString());
+        }
     }
 }

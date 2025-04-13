@@ -15,14 +15,14 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MonsterListWrapper {
     @XmlElement(name = "creature")
-    @JsonProperty("creatures")
-    private List<Monster> monsters;
+    //@JsonProperty("creatures")
+    private List<Monster> creatures;
 
-    public List<Monster> getMonsters() {
-        return monsters;
+    public List<Monster> getCreatures() {
+        return creatures;
     }
 
-    public void setMonsters(List<Monster> monsters) {
-        this.monsters = monsters;
+    public void setCreatures(List<Monster> creatures) {
+        this.creatures = creatures;
     }
 }

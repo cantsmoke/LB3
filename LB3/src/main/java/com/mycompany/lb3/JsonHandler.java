@@ -17,7 +17,7 @@ public class JsonHandler extends BaseHandler {
             if (file.exists() && filePath.endsWith(".json")) {
                 ObjectMapper objectMapper = new ObjectMapper();
                 MonsterListWrapper wrapper = objectMapper.readValue(file, MonsterListWrapper.class);
-                return wrapper.getMonsters();
+                return wrapper.getCreatures();
             }
         } catch (Exception e) {
             System.err.println("Error importing JSON data: " + e.getMessage());

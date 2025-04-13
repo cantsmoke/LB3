@@ -14,7 +14,7 @@ public class Recipe {
 
     @JsonProperty("ingredients")
     @XmlElement(name = "ingredients")
-    private Map<String, Integer> ingredients; // Ингредиенты и их количество
+    private String ingredients; // Ингредиенты и их количество
 
     @JsonProperty("brewing_time")
     @XmlElement(name = "brewingTime")
@@ -36,11 +36,11 @@ public class Recipe {
         this.recipeType = recipeType;
     }
 
-    public Map<String, Integer> getIngredients() {
+    public String getIngredients() {
         return ingredients;
     }
 
-    public void setIngredients(Map<String, Integer> ingredients) {
+    public void setIngredients(String ingredients) {
         this.ingredients = ingredients;
     }
 
