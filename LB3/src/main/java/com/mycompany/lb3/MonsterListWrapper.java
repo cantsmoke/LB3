@@ -15,7 +15,7 @@ import java.util.List;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class MonsterListWrapper {
     @XmlElement(name = "creature")
-    //@JsonProperty("creatures")
+    @JsonProperty("creatures")
     private List<Monster> creatures;
 
     public List<Monster> getCreatures() {

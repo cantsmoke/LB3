@@ -157,4 +157,11 @@ public class Monster {
     public void setSource(String source) {
         this.source = source;
     }
+    
+        @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append(name);
+        return sb.toString();
+    }
 }

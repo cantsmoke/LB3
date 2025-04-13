@@ -4,13 +4,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
-import java.util.Map;
 
 @XmlAccessorType(XmlAccessType.FIELD) // Для JAXB
 public class Recipe {
     @JsonProperty("type")
     @XmlElement(name = "type")
-    private String recipeType;
+    private String type;
 
     @JsonProperty("ingredients")
     @XmlElement(name = "ingredients")
@@ -29,11 +28,11 @@ public class Recipe {
 
     // Геттеры и сеттеры
     public String getType() {
-        return recipeType;
+        return type;
     }
 
-    public void setType(String recipeType) {
-        this.recipeType = recipeType;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getIngredients() {
