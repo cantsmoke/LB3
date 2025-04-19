@@ -1,6 +1,5 @@
 package com.mycompany.lb3;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.File;

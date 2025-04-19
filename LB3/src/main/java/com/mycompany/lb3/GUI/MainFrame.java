@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.mycompany.lb3.GUI;
 
 import com.mycompany.lb3.ChainOfResponsibility;
@@ -29,26 +25,21 @@ public class MainFrame extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
-        // Инициализация цепочки обязанностей
         fileHandlerChain = new ChainOfResponsibility();
 
-        // Создание панелей
         JPanel topPanel = createTopPanel();
         JPanel leftPanel = createLeftPanel();
         JPanel rightPanel = createRightPanel();
         JPanel bottomPanel = createBottomPanel();
 
-        // Добавление панелей в окно
         add(topPanel, BorderLayout.NORTH);
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
 
-        // Настройка одинаковой ширины для левой и правой панелей
         leftPanel.setPreferredSize(new Dimension(300, getHeight()));
         rightPanel.setPreferredSize(new Dimension(300, getHeight()));
 
-        // Инициализация JTree
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Monsters");
         treeModel = new DefaultTreeModel(root);
         monsterTree = new JTree(treeModel);
@@ -59,7 +50,6 @@ public class MainFrame extends JFrame {
             }
         });
 
-        // Добавление JTree в левую панель
         JScrollPane treeScrollPane = new JScrollPane(monsterTree);
         leftPanel.add(treeScrollPane, BorderLayout.CENTER);
 
@@ -156,32 +146,25 @@ public class MainFrame extends JFrame {
     private void displayMonsterDetails(Monster monster) {
         StringBuilder details = new StringBuilder();
 
-        // Основная информация
         details.append("Имя: ").append(monster.getName()).append("\n");
         details.append("Описание: ").append(monster.getDescription()).append("\n");
         details.append("Уровень опасности: ").append(monster.getDangerLevel()).append("\n");
         details.append("Место обитания: ").append(monster.getHabitat()).append("\n");
         details.append("Первое упоминание: ").append(monster.getFirstMention()).append("\n");
 
-        // Уязвимости и иммунитеты
         details.append("Уязвимость: ").append(monster.getVulnerabilities()).append("\n");
         if (monster.getImmunities() != null && !monster.getImmunities().isEmpty()) {
             details.append("Иммунитеты: ").append(String.join(", ", monster.getImmunities())).append("\n");
         }
 
-        // Время активности
         details.append("Активность: ").append(monster.getActiveTime()).append("\n");
 
-        // Размеры
-        // Рост
         details.append("Рост: ");
         if (monster.getHeight() != null && !monster.getHeight().isEmpty()) {
             try {
-                // Пробуем преобразовать в число
                 double heightValue = Integer.parseInt(monster.getHeight());
                 details.append(heightValue).append(" м");
             } catch (NumberFormatException e) {
-                // Если не число, выводим как есть
                 details.append(monster.getHeight());
             }
         } else {
@@ -189,15 +172,12 @@ public class MainFrame extends JFrame {
         }
         details.append("\n");
 
-        // Вес
         details.append("Вес: ");
         if (monster.getWeight() != null && !monster.getWeight().isEmpty()) {
             try {
-                // Пробуем преобразовать в число
                 double weightValue = Integer.parseInt(monster.getWeight());
                 details.append(weightValue).append(" кг");
             } catch (NumberFormatException e) {
-                // Если не число, выводим как есть
                 details.append(monster.getWeight());
             }
         } else {
@@ -205,18 +185,14 @@ public class MainFrame extends JFrame {
         }
         details.append("\n");
 
-            // Рецепт
-            Recipe recipe = monster.getRecipe();
-            if (recipe != null) {
-                details.append("Тип рецепта: ").append(recipe.getType()).append("\n");
-                details.append("Время приготовления: ").append(recipe.getBrewingTime()).append(" мин\n");
-                details.append("Эффективность: ").append(recipe.getEffectiveness()).append("\n");
-                details.append("Ингредиенты:").append(recipe.getIngredients()).append("\n");
-
-            // Источник информации
+        Recipe recipe = monster.getRecipe();
+        if (recipe != null) {
+            details.append("Тип рецепта: ").append(recipe.getType()).append("\n");
+            details.append("Время приготовления: ").append(recipe.getBrewingTime()).append(" мин\n");
+            details.append("Эффективность: ").append(recipe.getEffectiveness()).append("\n");
+            details.append("Ингредиенты:").append(recipe.getIngredients()).append("\n");
             details.append("Источник информации: ").append(monster.getSource()).append("\n");
 
-            // Обновление текстового поля
             monsterDetailsArea.setText(details.toString());
         }
     }

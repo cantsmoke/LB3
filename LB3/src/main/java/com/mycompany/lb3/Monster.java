@@ -7,10 +7,10 @@ import jakarta.xml.bind.annotation.XmlElementWrapper;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-@XmlAccessorType(XmlAccessType.FIELD) // Для JAXB
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Monster {
-    @JsonProperty("name") // Для Jackson
-    @XmlElement(name = "name") // Для JAXB
+    @JsonProperty("name")
+    @XmlElement(name = "name")
     private String name;
 
     @JsonProperty("description")
@@ -34,8 +34,8 @@ public class Monster {
     private String vulnerabilities;
 
     @JsonProperty("immunities")
-    @XmlElementWrapper(name = "immunities") // Для JAXB
-    @XmlElement(name = "immunity") // Для JAXB
+    @XmlElementWrapper(name = "immunities")
+    @XmlElement(name = "immunity")
     private List<String> immunities;
 
     @JsonProperty("active_time")
@@ -44,24 +44,22 @@ public class Monster {
 
     @XmlElement(name = "height")
     @JsonProperty("height")
-    private String height; // Было Object
+    private String height;
 
     @XmlElement(name = "weight")
     @JsonProperty("weight")
-    private String weight; // Было Object
+    private String weight;
 
     @JsonProperty("recipe")
     @XmlElement(name = "recipe")
-    private Recipe recipe; // Ссылка на рецепт
+    private Recipe recipe;
 
-    @JsonProperty("source") // Новый атрибут для хранения источника информации
+    @JsonProperty("source")
     @XmlElement(name = "source")
     private String source;
 
-    // Конструктор по умолчанию
     public Monster() {}
 
-    // Геттеры и сеттеры
     public String getName() {
         return name;
     }
@@ -158,7 +156,7 @@ public class Monster {
         this.source = source;
     }
     
-        @Override
+    @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append(name);

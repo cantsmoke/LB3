@@ -5,7 +5,7 @@ import jakarta.xml.bind.annotation.XmlAccessType;
 import jakarta.xml.bind.annotation.XmlAccessorType;
 import jakarta.xml.bind.annotation.XmlElement;
 
-@XmlAccessorType(XmlAccessType.FIELD) // Для JAXB
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Recipe {
     @JsonProperty("type")
     @XmlElement(name = "type")
@@ -13,20 +13,18 @@ public class Recipe {
 
     @JsonProperty("ingredients")
     @XmlElement(name = "ingredients")
-    private String ingredients; // Ингредиенты и их количество
+    private String ingredients;
 
     @JsonProperty("brewing_time")
     @XmlElement(name = "brewingTime")
-    private int brewingTime; // Время приготовления
+    private int brewingTime;
 
     @JsonProperty("effectiveness")
     @XmlElement(name = "effectiveness")
-    private String effectiveness; // Эффективность
+    private String effectiveness;
 
-    // Конструктор по умолчанию
     public Recipe() {}
 
-    // Геттеры и сеттеры
     public String getType() {
         return type;
     }
