@@ -11,7 +11,6 @@ public class JsonHandler extends BaseHandler {
     private final ObjectMapper objectMapper = new ObjectMapper();
     
     public JsonHandler() {
-        // Настройка форматирования JSON с отступами
         objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
     }
     
