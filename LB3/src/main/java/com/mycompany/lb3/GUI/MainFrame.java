@@ -17,6 +17,7 @@ public class MainFrame extends JFrame {
     private final DefaultTreeModel treeModel;
     private final ChainOfResponsibility fileHandlerChain;
     private MonsterDetailsPanel monsterDetailsPanel;
+    private static int fileOrderCounter = 0;
 
     public MainFrame() {
         setTitle("Monster Manager");
@@ -71,7 +72,7 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createRightPanel() {
-        monsterDetailsPanel = new MonsterDetailsPanel();
+        monsterDetailsPanel = new MonsterDetailsPanel(monsterStorage);
         return monsterDetailsPanel;
     }
 
@@ -115,16 +116,32 @@ public class MainFrame extends JFrame {
 
     private void importData() {
         String filePath = chooseFile();
+        String fileExtension = getFileExtension(filePath);
+        fileOrderCounter++;
         if (filePath != null) {
             List<Monster> importedMonsters = fileHandlerChain.importData(filePath);
             if (importedMonsters != null) {
-                 for (Monster monster : importedMonsters) {
+                for (Monster monster : importedMonsters) {
                     monster.setSource(filePath);
                 }
                 monsterStorage.addMonsterCollection(importedMonsters);
+                for (Monster monster : monsterStorage.getAllMonsters()) {
+                    if (monsterStorage.getDangerLevelValueChanges().containsKey(monster.getName())){
+                        monster.setDangerLevel(monsterStorage.getDangerLevelValueChanges().get(monster.getName())); 
+                    }
+                }
                 updateMonsterTree();
             }
         }
+        monsterStorage.addCollectionSources(fileOrderCounter, fileExtension);
+    }
+    
+    private String getFileExtension(String filePath) {
+        int dotIndex = filePath.lastIndexOf('.');
+        if (dotIndex > 0 && dotIndex < filePath.length() - 1) {
+            return filePath.substring(dotIndex + 1).toLowerCase();
+        }
+        return "";
     }
 
     private void exportData(ActionEvent e) {
@@ -141,8 +158,10 @@ public class MainFrame extends JFrame {
 
     private void updateMonsterTree() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Monsters");
+        int collectionNum = fileOrderCounter - (fileOrderCounter - 1);
         for (List<Monster> collection : monsterStorage.getMonsterCollections()) {
-            DefaultMutableTreeNode collectionNode = new DefaultMutableTreeNode("Monster Collection");
+            DefaultMutableTreeNode collectionNode = new DefaultMutableTreeNode("Monster Collection" + collectionNum);
+            collectionNum++;
             for (Monster monster : collection) {
                 collectionNode.add(new DefaultMutableTreeNode(monster));
             }

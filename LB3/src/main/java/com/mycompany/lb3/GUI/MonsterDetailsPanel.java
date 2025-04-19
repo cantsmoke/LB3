@@ -1,21 +1,28 @@
 package com.mycompany.lb3.GUI;
 
 import com.mycompany.lb3.Monster;
+import com.mycompany.lb3.MonsterStorage;
 import com.mycompany.lb3.Recipe;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
+import java.util.Map;
 
 public class MonsterDetailsPanel extends JPanel {
     private final JLabel nameLabel, descriptionLabel, dangerLevelLabel, habitatLabel, firstMentionLabel,
             vulnerabilitiesLabel, immunitiesLabel, activeTimeLabel, heightLabel, weightLabel,
             recipeTypeLabel, brewingTimeLabel, effectivenessLabel, ingredientsLabel, sourceLabel, recipeLabel, helpLabel;
-    private final JTextField nameField, dangerLevelField, habitatField, firstMentionField,
+    private final JTextField nameField, habitatField, firstMentionField,
             vulnerabilitiesField, activeTimeField, heightField, weightField,
             recipeTypeField, brewingTimeField, effectivenessField, sourceField;
     private final JTextArea descriptionArea, immunitiesArea, ingredientsArea;
+    private final JComboBox<Integer> dangerLevelComboBox;
+    private Monster currentMonster;
+    private final MonsterStorage monsterStorage;
 
-    public MonsterDetailsPanel() {
+    public MonsterDetailsPanel(MonsterStorage monsterStorage) {
+        this.monsterStorage = monsterStorage;
+        
         setLayout(new GridLayout(0, 2));
         setBorder(BorderFactory.createTitledBorder("Информация о монстре"));
 
@@ -25,15 +32,15 @@ public class MonsterDetailsPanel extends JPanel {
         add(nameField);
 
         descriptionLabel = new JLabel("Описание:");
-        descriptionArea = createTextArea(true);
+        descriptionArea = createTextArea(false);
         JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
         add(descriptionLabel);
         add(descriptionScrollPane);
 
         dangerLevelLabel = new JLabel("Уровень опасности:");
-        dangerLevelField = createTextField(true);
+        dangerLevelComboBox = createDangerLevelComboBox();
         add(dangerLevelLabel);
-        add(dangerLevelField);
+        add(dangerLevelComboBox);
 
         habitatLabel = new JLabel("Место обитания:");
         habitatField = createTextField(false);
@@ -82,7 +89,7 @@ public class MonsterDetailsPanel extends JPanel {
         add(recipeTypeField);
 
         brewingTimeLabel = new JLabel("Время приготовления:");
-        brewingTimeField = createTextField(true);
+        brewingTimeField = createTextField(false);
         add(brewingTimeLabel);
         add(brewingTimeField);
 
@@ -101,6 +108,7 @@ public class MonsterDetailsPanel extends JPanel {
         sourceField = createTextField(false);
         add(sourceLabel);
         add(sourceField);
+        
     }
 
     private JTextField createTextField(boolean editable) {
@@ -116,6 +124,26 @@ public class MonsterDetailsPanel extends JPanel {
         area.setEditable(editable);
         return area;
     }
+    
+    private JComboBox<Integer> createDangerLevelComboBox() {
+        Integer[] levels = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10};
+        JComboBox<Integer> comboBox = new JComboBox<>(levels);
+        comboBox.addActionListener(e -> {
+            JComboBox<?> cb = (JComboBox<?>) e.getSource();
+            int selectedValue = (int) cb.getSelectedItem();
+            if (currentMonster != null) {
+                currentMonster.setDangerLevel(selectedValue);
+                monsterStorage.addDangerLevelValueChanges(currentMonster.getName(), currentMonster.getDangerLevel());
+                String monsterName = currentMonster.getName();
+                for (Monster monster : monsterStorage.getAllMonsters()) {
+                    if (monster.getName().equals(monsterName)) {
+                        monster.setDangerLevel(selectedValue);
+                    }
+                }
+            }
+        });
+        return comboBox;
+    }
 
     public void displayMonsterDetails(Monster monster) {
         if (monster == null) {
@@ -123,9 +151,11 @@ public class MonsterDetailsPanel extends JPanel {
             return;
         }
 
+        currentMonster = monster;
+        
         nameField.setText(monster.getName());
         descriptionArea.setText(monster.getDescription());
-        dangerLevelField.setText(String.valueOf(monster.getDangerLevel()));
+        dangerLevelComboBox.setSelectedItem(monster.getDangerLevel());
         habitatField.setText(monster.getHabitat());
         firstMentionField.setText(monster.getFirstMention());
         vulnerabilitiesField.setText(monster.getVulnerabilities());
@@ -140,7 +170,7 @@ public class MonsterDetailsPanel extends JPanel {
         Recipe recipe = monster.getRecipe();
         if (recipe != null) {
             recipeTypeField.setText(recipe.getType());
-            brewingTimeField.setText(String.valueOf(recipe.getBrewingTime()));
+            brewingTimeField.setText(String.valueOf(recipe.getBrewingTime()) + " минут");
             effectivenessField.setText(recipe.getEffectiveness());
             ingredientsArea.setText(recipe.getIngredients());
         } else {
@@ -154,9 +184,10 @@ public class MonsterDetailsPanel extends JPanel {
     }
 
     public void clearMonsterFields() {
+        currentMonster = null;
         nameField.setText("");
         descriptionArea.setText("");
-        dangerLevelField.setText("");
+        dangerLevelComboBox.setSelectedIndex(0);
         habitatField.setText("");
         firstMentionField.setText("");
         vulnerabilitiesField.setText("");
