@@ -139,20 +139,47 @@ public class MainFrame extends JFrame {
     private String getFileExtension(String filePath) {
         int dotIndex = filePath.lastIndexOf('.');
         if (dotIndex > 0 && dotIndex < filePath.length() - 1) {
-            return filePath.substring(dotIndex + 1).toLowerCase();
+            return filePath.substring(dotIndex + 1).toUpperCase();
         }
         return "";
     }
 
     private void exportData(ActionEvent e) {
-        JFileChooser fileChooser = new JFileChooser();
-        fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Поддерживаемые форматы", "json", "xml", "yaml", "yml"));
-        fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+        List<List<Monster>> collections = monsterStorage.getMonsterCollections();
 
-        int result = fileChooser.showSaveDialog(this);
-        if (result == JFileChooser.APPROVE_OPTION) {
-            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
-            fileHandlerChain.exportData(filePath, monsterStorage.getAllMonsters());
+        String[] options = new String[collections.size()];
+        for (int i = 0; i < collections.size(); i++) {
+            options[i] = "Monster Collection " + (i + 1) + " " + monsterStorage.getCollectionSources().get(i + 1);
+        }
+
+        String selectedOption = (String) JOptionPane.showInputDialog(
+                this,
+                "Выберите коллекцию для экспорта:",
+                "Выбор коллекции",
+                JOptionPane.QUESTION_MESSAGE,
+                null,
+                options,
+                options[0]
+        );
+
+        int selectedIndex = -1;
+        if (selectedOption != null) {
+            selectedIndex = Integer.parseInt(selectedOption.split(" ")[2]) - 1;
+        }
+
+        if (selectedIndex >= 0 && selectedIndex < collections.size()) {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new javax.swing.filechooser.FileNameExtensionFilter("Поддерживаемые форматы", "json", "xml", "yaml", "yml"));
+            fileChooser.setCurrentDirectory(new File(System.getProperty("user.dir")));
+
+            int result = fileChooser.showSaveDialog(this);
+            if (result == JFileChooser.APPROVE_OPTION) {
+                String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+                fileHandlerChain.exportData(filePath, collections.get(selectedIndex));
+                JOptionPane.showMessageDialog(this, "Данные успешно экспортированы в: " + filePath);
+            }
+        } else {
+            JOptionPane.showMessageDialog(this, "Экспорт отменен. Коллекция не выбрана.");
         }
     }
 
@@ -160,7 +187,7 @@ public class MainFrame extends JFrame {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Monsters");
         int collectionNum = fileOrderCounter - (fileOrderCounter - 1);
         for (List<Monster> collection : monsterStorage.getMonsterCollections()) {
-            DefaultMutableTreeNode collectionNode = new DefaultMutableTreeNode("Monster Collection" + collectionNum);
+            DefaultMutableTreeNode collectionNode = new DefaultMutableTreeNode("Monster Collection " + collectionNum);
             collectionNum++;
             for (Monster monster : collection) {
                 collectionNode.add(new DefaultMutableTreeNode(monster));
