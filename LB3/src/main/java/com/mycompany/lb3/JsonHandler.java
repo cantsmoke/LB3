@@ -1,6 +1,7 @@
 package com.mycompany.lb3;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +9,12 @@ import java.util.List;
 
 public class JsonHandler extends BaseHandler {
     private final ObjectMapper objectMapper = new ObjectMapper();
-
+    
+    public JsonHandler() {
+        // Настройка форматирования JSON с отступами
+        objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+    }
+    
     @Override
     public List<Monster> importData(String filePath) {
         try {
