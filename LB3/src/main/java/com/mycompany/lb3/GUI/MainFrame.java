@@ -92,6 +92,15 @@ public class MainFrame extends JFrame {
         panel.add(exportButton);
         return panel;
     }
+    
+    private boolean isFileAlreadyImported(String filePath) {
+        for (Monster monster : monsterStorage.getAllMonsters()) {
+            if (filePath.equals(monster.getSource())) {
+                return true;
+            }
+        }
+        return false;
+    }
 
     private String chooseFile() {
         JFileChooser fileChooser = new JFileChooser();
@@ -100,7 +109,14 @@ public class MainFrame extends JFrame {
 
         int result = fileChooser.showOpenDialog(this);
         if (result == JFileChooser.APPROVE_OPTION) {
-            return fileChooser.getSelectedFile().getAbsolutePath();
+            String filePath = fileChooser.getSelectedFile().getAbsolutePath();
+
+            if (isFileAlreadyImported(filePath)) {
+                JOptionPane.showMessageDialog(this, "Данные из файла '" + filePath + "' уже были импортированы.", "Ошибка", JOptionPane.ERROR_MESSAGE);
+                return null;
+            }
+
+            return filePath;
         }
         return null;
     }
