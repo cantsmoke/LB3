@@ -16,12 +16,18 @@ public class MainFrame extends JFrame {
     private final MonsterStorage monsterStorage = new MonsterStorage();
     private final JTree monsterTree;
     private final DefaultTreeModel treeModel;
-    private JTextArea monsterDetailsArea;
     private final ChainOfResponsibility fileHandlerChain;
+    private JLabel nameLabel, descriptionLabel, dangerLevelLabel, habitatLabel, firstMentionLabel,
+              vulnerabilitiesLabel, immunitiesLabel, activeTimeLabel, heightLabel, weightLabel,
+              recipeTypeLabel, brewingTimeLabel, effectivenessLabel, ingredientsLabel, sourceLabel, recipeLabel, helpLabel;
+    private JTextField nameField, dangerLevelField, habitatField, firstMentionField,
+                       vulnerabilitiesField, activeTimeField, heightField, weightField,
+                       recipeTypeField, brewingTimeField, effectivenessField, sourceField;
+    private JTextArea descriptionArea, immunitiesArea, ingredientsArea;
 
     public MainFrame() {
         setTitle("Monster Manager");
-        setSize(800, 600);
+        setSize(900, 600);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
 
@@ -32,7 +38,7 @@ public class MainFrame extends JFrame {
         JPanel rightPanel = createRightPanel();
         JPanel bottomPanel = createBottomPanel();
 
-        add(topPanel, BorderLayout.NORTH);
+        add(topPanel, BorderLayout.NORTH); 
         add(leftPanel, BorderLayout.WEST);
         add(rightPanel, BorderLayout.CENTER);
         add(bottomPanel, BorderLayout.SOUTH);
@@ -72,14 +78,113 @@ public class MainFrame extends JFrame {
     }
 
     private JPanel createRightPanel() {
-        JPanel panel = new JPanel(new BorderLayout());
+        JPanel panel = new JPanel(new GridLayout(0, 2));
         panel.setBorder(BorderFactory.createTitledBorder("Информация о монстре"));
 
-        monsterDetailsArea = new JTextArea();
-        monsterDetailsArea.setEditable(false);
-        JScrollPane detailsScrollPane = new JScrollPane(monsterDetailsArea);
+        nameLabel = new JLabel("Имя:");
+        nameField = new JTextField();
+        nameField.setEditable(false);
+        panel.add(nameLabel);
+        panel.add(nameField);
 
-        panel.add(detailsScrollPane, BorderLayout.CENTER);
+        descriptionLabel = new JLabel("Описание:");
+        descriptionArea = new JTextArea();
+        descriptionArea.setLineWrap(true);
+        descriptionArea.setWrapStyleWord(true);
+        descriptionArea.setEditable(true);
+        JScrollPane descriptionScrollPane = new JScrollPane(descriptionArea);
+        panel.add(descriptionLabel);
+        panel.add(descriptionScrollPane);
+
+        dangerLevelLabel = new JLabel("Уровень опасности:");
+        dangerLevelField = new JTextField();
+        dangerLevelField.setEditable(true);
+        panel.add(dangerLevelLabel);
+        panel.add(dangerLevelField);
+
+        habitatLabel = new JLabel("Место обитания:");
+        habitatField = new JTextField();
+        habitatField.setEditable(false);
+        panel.add(habitatLabel);
+        panel.add(habitatField);
+
+        firstMentionLabel = new JLabel("Первое упоминание:");
+        firstMentionField = new JTextField();
+        firstMentionField.setEditable(false);
+        panel.add(firstMentionLabel);
+        panel.add(firstMentionField);
+
+        vulnerabilitiesLabel = new JLabel("Уязвимость:");
+        vulnerabilitiesField = new JTextField();
+        vulnerabilitiesField.setEditable(false);
+        panel.add(vulnerabilitiesLabel);
+        panel.add(vulnerabilitiesField);
+
+        immunitiesLabel = new JLabel("Иммунитеты:");
+        immunitiesArea = new JTextArea();
+        immunitiesArea.setLineWrap(true);
+        immunitiesArea.setWrapStyleWord(true);
+        immunitiesArea.setEditable(false);
+        JScrollPane immunitiesScrollPane = new JScrollPane(immunitiesArea);
+        panel.add(immunitiesLabel);
+        panel.add(immunitiesScrollPane);
+
+        activeTimeLabel = new JLabel("Активность:");
+        activeTimeField = new JTextField();
+        activeTimeField.setEditable(false);
+        panel.add(activeTimeLabel);
+        panel.add(activeTimeField);
+
+        heightLabel = new JLabel("Рост:");
+        heightField = new JTextField();
+        heightField.setEditable(false);
+        panel.add(heightLabel);
+        panel.add(heightField);
+
+        weightLabel = new JLabel("Вес:");
+        weightField = new JTextField();
+        weightField.setEditable(false);
+        panel.add(weightLabel);
+        panel.add(weightField);
+        
+        recipeLabel = new JLabel("Рецепт");
+        helpLabel = new JLabel();
+        panel.add(recipeLabel);
+        panel.add(helpLabel);
+
+        recipeTypeLabel = new JLabel("Тип рецепта:");
+        recipeTypeField = new JTextField();
+        recipeTypeField.setEditable(false);
+        panel.add(recipeTypeLabel);
+        panel.add(recipeTypeField);
+
+        brewingTimeLabel = new JLabel("Время приготовления:");
+        brewingTimeField = new JTextField();
+        brewingTimeField.setEditable(true);
+        panel.add(brewingTimeLabel);
+        panel.add(brewingTimeField);
+
+        effectivenessLabel = new JLabel("Эффективность:");
+        effectivenessField = new JTextField();
+        effectivenessField.setEditable(false);
+        panel.add(effectivenessLabel);
+        panel.add(effectivenessField);
+
+        ingredientsLabel = new JLabel("Ингредиенты:");
+        ingredientsArea = new JTextArea();
+        ingredientsArea.setLineWrap(true);
+        ingredientsArea.setWrapStyleWord(true);
+        ingredientsArea.setEditable(false);
+        JScrollPane ingredientsScrollPane = new JScrollPane(ingredientsArea);
+        panel.add(ingredientsLabel);
+        panel.add(ingredientsScrollPane);
+
+        sourceLabel = new JLabel("Источник информации:");
+        sourceField = new JTextField();
+        sourceField.setEditable(false);
+        panel.add(sourceLabel);
+        panel.add(sourceField);
+
         return panel;
     }
 
@@ -160,56 +265,56 @@ public class MainFrame extends JFrame {
     }
 
     private void displayMonsterDetails(Monster monster) {
-        StringBuilder details = new StringBuilder();
-
-        details.append("Имя: ").append(monster.getName()).append("\n");
-        details.append("Описание: ").append(monster.getDescription()).append("\n");
-        details.append("Уровень опасности: ").append(monster.getDangerLevel()).append("\n");
-        details.append("Место обитания: ").append(monster.getHabitat()).append("\n");
-        details.append("Первое упоминание: ").append(monster.getFirstMention()).append("\n");
-
-        details.append("Уязвимость: ").append(monster.getVulnerabilities()).append("\n");
-        if (monster.getImmunities() != null && !monster.getImmunities().isEmpty()) {
-            details.append("Иммунитеты: ").append(String.join(", ", monster.getImmunities())).append("\n");
+        if (monster == null) {
+            clearMonsterFields();
+            return;
         }
 
-        details.append("Активность: ").append(monster.getActiveTime()).append("\n");
+        nameField.setText(monster.getName());
+        descriptionArea.setText(monster.getDescription());
+        dangerLevelField.setText(String.valueOf(monster.getDangerLevel()));
+        habitatField.setText(monster.getHabitat());
+        firstMentionField.setText(monster.getFirstMention());
+        vulnerabilitiesField.setText(monster.getVulnerabilities());
 
-        details.append("Рост: ");
-        if (monster.getHeight() != null && !monster.getHeight().isEmpty()) {
-            try {
-                double heightValue = Integer.parseInt(monster.getHeight());
-                details.append(heightValue).append(" м");
-            } catch (NumberFormatException e) {
-                details.append(monster.getHeight());
-            }
-        } else {
-            details.append("неизвестно");
-        }
-        details.append("\n");
+        List<String> immunities = monster.getImmunities();
+        immunitiesArea.setText(immunities != null && !immunities.isEmpty() ? String.join(", ", immunities) : "нет");
 
-        details.append("Вес: ");
-        if (monster.getWeight() != null && !monster.getWeight().isEmpty()) {
-            try {
-                double weightValue = Integer.parseInt(monster.getWeight());
-                details.append(weightValue).append(" кг");
-            } catch (NumberFormatException e) {
-                details.append(monster.getWeight());
-            }
-        } else {
-            details.append("неизвестно");
-        }
-        details.append("\n");
+        activeTimeField.setText(monster.getActiveTime());
+        heightField.setText(monster.getHeight() != null ? monster.getHeight() : "неизвестно");
+        weightField.setText(monster.getWeight() != null ? monster.getWeight() : "неизвестно");
 
         Recipe recipe = monster.getRecipe();
         if (recipe != null) {
-            details.append("Тип рецепта: ").append(recipe.getType()).append("\n");
-            details.append("Время приготовления: ").append(recipe.getBrewingTime()).append(" мин\n");
-            details.append("Эффективность: ").append(recipe.getEffectiveness()).append("\n");
-            details.append("Ингредиенты:").append(recipe.getIngredients()).append("\n");
-            details.append("Источник информации: ").append(monster.getSource()).append("\n");
-
-            monsterDetailsArea.setText(details.toString());
+            recipeTypeField.setText(recipe.getType());
+            brewingTimeField.setText(String.valueOf(recipe.getBrewingTime()));
+            effectivenessField.setText(recipe.getEffectiveness());
+            ingredientsArea.setText(recipe.getIngredients());
+        } else {
+            recipeTypeField.setText("не указан");
+            brewingTimeField.setText("не указано");
+            effectivenessField.setText("не указана");
+            ingredientsArea.setText("не указаны");
         }
+
+        sourceField.setText(monster.getSource());
+    }
+
+    private void clearMonsterFields() {
+        nameField.setText("");
+        descriptionArea.setText("");
+        dangerLevelField.setText("");
+        habitatField.setText("");
+        firstMentionField.setText("");
+        vulnerabilitiesField.setText("");
+        immunitiesArea.setText("");
+        activeTimeField.setText("");
+        heightField.setText("");
+        weightField.setText("");
+        recipeTypeField.setText("");
+        brewingTimeField.setText("");
+        effectivenessField.setText("");
+        ingredientsArea.setText("");
+        sourceField.setText("");
     }
 }
