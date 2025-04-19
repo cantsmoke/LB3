@@ -134,7 +134,7 @@ public class MainFrame extends JFrame {
     private void updateMonsterTree() {
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Monsters");
         for (List<Monster> collection : monsterStorage.getMonsterCollections()) {
-            DefaultMutableTreeNode collectionNode = new DefaultMutableTreeNode("Collection");
+            DefaultMutableTreeNode collectionNode = new DefaultMutableTreeNode("Monster Collection");
             for (Monster monster : collection) {
                 collectionNode.add(new DefaultMutableTreeNode(monster));
             }
