@@ -6,7 +6,6 @@ import com.mycompany.lb3.Recipe;
 import javax.swing.*;
 import java.awt.*;
 import java.util.List;
-import java.util.Map;
 
 public class MonsterDetailsPanel extends JPanel {
     private final JLabel nameLabel, descriptionLabel, dangerLevelLabel, habitatLabel, firstMentionLabel,
