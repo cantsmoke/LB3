@@ -33,7 +33,10 @@ public class JsonHandler extends BaseHandler {
     public void exportData(String filePath, List<Monster> monsters) {
         try {
             if (filePath.endsWith(".json")) {
-                objectMapper.writeValue(new File(filePath), monsters);
+                MonsterListWrapper wrapper = new MonsterListWrapper();
+                wrapper.setCreatures(monsters);
+
+                objectMapper.writeValue(new File(filePath), wrapper);
                 System.out.println("Data successfully exported to JSON file.");
                 return;
             }

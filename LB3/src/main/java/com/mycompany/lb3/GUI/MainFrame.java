@@ -116,6 +116,9 @@ public class MainFrame extends JFrame {
 
     private void importData() {
         String filePath = chooseFile();
+        if (filePath == null){
+            return;
+        }
         String fileExtension = getFileExtension(filePath);
         fileOrderCounter++;
         if (filePath != null) {

@@ -24,7 +24,7 @@ public class YamlHandler extends BaseHandler {
     public List<Monster> importData(String filePath) {
         try {
             File file = new File(filePath);
-            if (file.exists() && filePath.endsWith(".yaml")) {
+            if (file.exists() && (filePath.endsWith(".yaml") || filePath.endsWith(".yml"))) {
                 YamlReader reader = new YamlReader(new FileReader(file, java.nio.charset.StandardCharsets.UTF_8));
                 
                 MonsterListWrapper wrapper = reader.read(MonsterListWrapper.class);
@@ -41,7 +41,7 @@ public class YamlHandler extends BaseHandler {
     @Override
     public void exportData(String filePath, List<Monster> monsters) {
         try {
-            if (filePath.endsWith(".yaml")) {
+            if (filePath.endsWith(".yaml") || filePath.endsWith(".yml")) {
                 MonsterListWrapper wrapper = new MonsterListWrapper();
                 wrapper.setCreatures(monsters);
 
